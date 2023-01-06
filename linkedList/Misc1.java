@@ -1,4 +1,4 @@
-import javax.swing.text.StyledEditorKit.BoldAction;
+//import javax.swing.text.StyledEditorKit.BoldAction;
 
 public class Misc1 {
     static class Node{
@@ -167,31 +167,55 @@ public class Misc1 {
 
     }
 
-    static Node foldLL(Node start){
+    static void foldLL(Node start){
         Node left = start;
-        return foldCheck(start, start, left, 0);
+        foldCheck(start, start, left, 0);
     }
 
-    static Node foldCheck(Node right, Node start, Node left, int cout){
+    static void foldCheck(Node right, Node start, Node left, int cout){
+        Node cstart= start;
         if(right == null){
-            return start;
+            return ;
         }
 
+        //System.out.println(cout);
         foldCheck(right.ptr, start, left, cout+1);
-        System.out.println(sizeLL(start));
+        System.out.println(sizeLL(cstart)/2);
         System.out.println(cout);
-        if(cout > sizeLL(start)){
+        if(cout > sizeLL(cstart)/2){
             Node tmp = left.ptr;
             left.ptr= right;
             //System.out.println(left.val);
             //System.out.println(right.val);
             right.ptr= tmp;
             left=tmp;
-        } else if( cout == sizeLL(start)){
+        } else if( cout == sizeLL(cstart)/2){
             right.ptr=null;
         }
+    }
 
-        return start;
+    static Node intersectLL(Node start1, Node start2){
+        Node tmp1 = start1;
+        Node tmp2 = start2;
+
+        int d= Math.abs(sizeLL(start1)-sizeLL(start2));
+        System.out.println(d);
+        if(sizeLL(start1)> sizeLL(tmp2)){
+            for( int i=0; i<d; i++){
+                tmp1=tmp1.ptr;
+            }
+        } else{
+            for(int i=0; i<d;i++){
+                tmp2=tmp2.ptr;
+            }
+        }
+
+        while(tmp1.ptr != tmp2.ptr){
+            tmp1 = tmp1.ptr;
+            tmp2 = tmp2.ptr;
+        }
+
+        return tmp1.ptr;
     }
 
     static int sizeLL(Node node){
@@ -217,13 +241,13 @@ public class Misc1 {
         start1.ptr.ptr = new Node(4);
         start1.ptr.ptr.ptr= new Node(5);
         start1.ptr.ptr.ptr.ptr= new Node(7);
-        start1.ptr.ptr.ptr.ptr.ptr= new Node(9);
+        //start1.ptr.ptr.ptr.ptr.ptr= new Node(9);
         //start.ptr.ptr.ptr.ptr.ptr.ptr= new Node(2);
 
         Node start2 = new Node(0);
         start2.ptr = new Node(10);
         start2.ptr.ptr = new Node(6);
-        start2.ptr.ptr.ptr= new Node(27);
+        start2.ptr.ptr.ptr= new Node(7);
         start2.ptr.ptr.ptr.ptr= new Node(11);
         start2.ptr.ptr.ptr.ptr.ptr= new Node(14);
         start2.ptr.ptr.ptr.ptr.ptr.ptr= new Node(22);
@@ -250,9 +274,11 @@ public class Misc1 {
         */
 
         //System.out.println("gkjgj");
-        printLL(foldLL(start1));
-
+        //foldLL(start2);
+        //printLL(start2);
         //printLL(kReverse(start2, 3));
+
+        System.out.println("Value"+(intersectLL(start1, start2)).val);
 
 
     }
