@@ -10,6 +10,14 @@ public class Misc1 {
         }
     }
 
+    static Node addFirst(Node start, int num) {
+        Node nnode = new Node(num);
+        nnode.ptr = start;
+        start = nnode;
+
+        return start;
+    }
+
     static int kthEnd(Node start, int k){
         Node front=start;
         Node back=start;
@@ -218,6 +226,38 @@ public class Misc1 {
         return tmp1.ptr;
     }
 
+    static Node add2NumLL(Node start1, Node start2){
+        Node result=null;
+        int crr = addCheck(start1, sizeLL(start1), start2, sizeLL(start2), result);
+        System.out.println(result.val);
+        if(crr>0){
+            addFirst(result, crr);
+        }
+        return result;
+    }
+    static int addCheck(Node start1, int pos1, Node start2, int pos2, Node result){
+        if(pos1 == 0 && pos2 == 0){
+            return 0;
+        }
+        int ele=0;
+        if(pos1<pos2){
+            int crr = addCheck(start1, pos1, start2.ptr, pos2 - 1, result);
+            ele = start2.val+crr;
+        } else if(pos1 >pos2){
+            int crr = addCheck(start1.ptr, pos1 -1, start2, pos2, result);
+            ele = start1.val + crr;
+        } else {
+            int crr = addCheck(start1.ptr, pos1 -1, start2.ptr, pos2 -1, result);
+            ele = start1.val + start2.val + crr;
+        }
+
+        int nele = ele%10;
+        int ncrr = ele/10;
+        addFirst(result, nele);
+
+        return ncrr;
+    }
+
     static int sizeLL(Node node){
         int ct=1;
         while (node.ptr != null) {
@@ -236,7 +276,7 @@ public class Misc1 {
         System.out.println(node.val);
     }
     public static void main(String[] args) {
-        Node start1 = new Node(0);
+        Node start1 = new Node(8);
         start1.ptr = new Node(3);
         start1.ptr.ptr = new Node(4);
         start1.ptr.ptr.ptr= new Node(5);
@@ -245,12 +285,12 @@ public class Misc1 {
         //start.ptr.ptr.ptr.ptr.ptr.ptr= new Node(2);
 
         Node start2 = new Node(0);
-        start2.ptr = new Node(10);
+        start2.ptr = new Node(1);
         start2.ptr.ptr = new Node(6);
         start2.ptr.ptr.ptr= new Node(7);
-        start2.ptr.ptr.ptr.ptr= new Node(11);
-        start2.ptr.ptr.ptr.ptr.ptr= new Node(14);
-        start2.ptr.ptr.ptr.ptr.ptr.ptr= new Node(22);
+        //start2.ptr.ptr.ptr.ptr= new Node(11);
+        //start2.ptr.ptr.ptr.ptr.ptr= new Node(14);
+        //start2.ptr.ptr.ptr.ptr.ptr.ptr= new Node(22);
 
 
         //printLL(start1);
@@ -278,7 +318,9 @@ public class Misc1 {
         //printLL(start2);
         //printLL(kReverse(start2, 3));
 
-        System.out.println("Value"+(intersectLL(start1, start2)).val);
+        //System.out.println("Value"+(intersectLL(start1, start2)).val);
+
+        //printLL(add2NumLL(start1, start2));
 
 
     }
