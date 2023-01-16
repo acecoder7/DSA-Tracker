@@ -337,13 +337,72 @@ public class Misc2 {
         return dummy.next;
     }
 
+    static Node remAllDupl(Node start){
+        if(start==null || start.next==null){
+            return null;
+        }
+        Node dummy = new Node(0);
+        Node tmp = dummy;
+        tmp.next=start;
+        Node curr = start.next;
+        while(curr!=null){
+            Boolean flag=false;
+            while(curr!=null && tmp.next.val==curr.val){
+                flag=true;
+                curr=curr.next;
+            }
+
+            if(flag){
+                tmp.next=curr;
+            }else{
+                tmp=tmp.next;
+            }
+            if(curr!=null){
+                curr=curr.next;
+            }
+        }
+        return dummy.next;
+    }
+
+    static Node seg012(Node start){
+        if(start==null || start.next==null){
+            return null;
+        }
+        Node zero = new Node(0);
+        Node prev0 = zero;
+        Node one = new Node(0);
+        Node prev1 = one;
+        Node two = new Node(0);
+        Node prev2 = two;
+        Node curr = start;
+
+        while(curr!=null){
+            if(curr.val==0){
+                prev0.next=curr;
+                prev0=prev0.next;
+            }else if(curr.val==1){
+                prev1.next=curr;
+                prev1=prev1.next;
+            }else{
+                prev2.next=curr;
+                prev2=prev2.next;
+            }
+            curr=curr.next;
+        }
+        prev1.next=prev2;
+        prev0.next=prev1;
+        prev2.next=null;
+
+        return zero.next;
+    }
+
 
 
     public static void main(String[] args) {
         Node start1 = new Node(1);
         start1.next = new Node(3);
         start1.next.next = new Node(4);
-        start1.next.next.next= new Node(5);
+        start1.next.next.next= new Node(4);
         start1.next.next.next.next= new Node(7);
         //start1.next.next.next.next.next= new Node(9);
         //start1.next.next.next.next.next.next= new Node(2);
@@ -356,13 +415,13 @@ public class Misc2 {
         //start2.next.next.next.next.next= new Node(14);
         //start2.next.next.next.next.next.next= new Node(22);
 
-        Node start3 = new Node(6);
-        start3.next = new Node(9);
-        start3.next.next = new Node(16);
-        start3.next.next.next= new Node(16);
-        start3.next.next.next.next= new Node(16);
-        start3.next.next.next.next.next= new Node(94);
-        start3.next.next.next.next.next.next= new Node(122);
+        Node start3 = new Node(0);
+        start3.next = new Node(0);
+        start3.next.next = new Node(1);
+        start3.next.next.next= new Node(2);
+        start3.next.next.next.next= new Node(1);
+        start3.next.next.next.next.next= new Node(0);
+        start3.next.next.next.next.next.next= new Node(2);
 
         //Node[] list = {start1, start2, start3};
 
@@ -376,7 +435,9 @@ public class Misc2 {
 
         //printLL(Sub2LL(start1, start2));
         //printLL(mul2LL(start1, start3));
-        printLL(removeDupl(start3));
+        //printLL(removeDupl(start3));
+        //printLL(remAllDupl(start1));
+        printLL(seg012(start3));
 
 
     }
