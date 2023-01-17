@@ -396,6 +396,82 @@ public class Misc2 {
         return zero.next;
     }
 
+    static Node[] segregate(Node start, int pivotIndex){
+        Node less = new Node(0);
+        Node high = new Node(0);
+        Node curr = start;
+        Node pivotNode = start;
+        Node lp = less;
+        Node hp = high;
+
+        while(pivotIndex-->0){
+            pivotNode=pivotNode.next;
+        }
+
+        while(curr != null){
+            if(curr!=pivotNode){
+                if(curr.val<=pivotNode.val){
+                    lp.next=curr;
+                    lp=lp.next;
+                } else {
+                    hp.next=curr;
+                    hp=hp.next;
+                }
+            }
+            curr=curr.next;
+        }
+        lp.next=null;
+        hp.next=null;
+        pivotNode.next=null;
+        return new Node[] {less.next, pivotNode, high.next};
+    }
+
+    static Node[] mergeSorted(Node[] leftSorted, Node pivotNode, Node[] rightSorted){
+        Node head = null;
+        Node tail = null;
+
+        if(leftSorted[0]==null && rightSorted[0]==null){
+            leftSorted[1].next=pivotNode;
+            pivotNode.next=rightSorted[0];
+            rightSorted[1].next=null;
+            head=leftSorted[0];
+            tail=rightSorted[1];
+        } else if(leftSorted[0]==null){
+            pivotNode.next=rightSorted[0];
+            rightSorted[1].next=null;
+            head=pivotNode;
+            tail=rightSorted[1];
+        } else if(rightSorted[0]==null){
+            leftSorted[1].next=pivotNode;
+            pivotNode.next=null;
+            head=leftSorted[0];
+            tail=pivotNode;
+        }else{
+            head=tail=pivotNode;
+            pivotNode.next=null;
+        }
+        return new Node[] {head,tail};
+    }
+
+    static Node[] quickSort_(Node start){
+        int len=sizeLL(start);
+        int pivotIndex = len/2;
+
+        Node[] segregated = segregate(start, pivotIndex);
+        Node[] leftSorted = quickSort_(segregated[0]);
+        Node[] rightSorted = quickSort_(segregated[2]);
+
+        return mergeSorted(leftSorted, segregated[1], rightSorted);
+    }
+
+    static Node quickSort(Node start){
+        if(start==null || start.next==null){
+            return start;
+        }
+
+        return quickSort_(start)[0];
+    }
+
 
 
     public static void main(String[] args) {
@@ -437,7 +513,8 @@ public class Misc2 {
         //printLL(mul2LL(start1, start3));
         //printLL(removeDupl(start3));
         //printLL(remAllDupl(start1));
-        printLL(seg012(start3));
+        //printLL(seg012(start3));
+        printLL(quickSort(start3));
 
 
     }
