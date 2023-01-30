@@ -119,13 +119,16 @@ public class Misc11 {
     }
 
     static DNode addAt(DNode head, int idx, int ele){
-        if(head==null || head.next==null || idx==0){
-            addFirst(head, ele);
-        }
-        if(sizeLL(head)==idx){
-            addLast(head, ele);
-        }
-        DNode tmp = getAt(head, idx);
+        if(idx==0){
+            return addFirst(head, ele);
+        }else if(sizeLL(head)==idx){
+            return addLast(head, ele);
+        } else {
+            if(head==null){
+                DNode nnode = new DNode(ele);
+                head=nnode;
+            }
+            DNode tmp = getAt(head, idx);
         DNode pre = tmp.prev;
         //System.out.println(tmp.val);
         DNode nnode = new DNode(ele);
@@ -134,18 +137,74 @@ public class Misc11 {
         nnode.next=tmp;
         tmp.prev=nnode;
 
-        return head;
+        }
         
+        return head; 
 
     }
+
+    static DNode removeAt(DNode head, int idx){
+        if(idx==0){
+            return removeFirst(head) ;
+        } else if(idx==sizeLL(head)-1){
+            return removeLast(head) ;
+        } else{
+            if(head==null){
+                return null;
+            }
+            DNode tmp=head;
+            while(idx-->0){
+               tmp=tmp.next;
+            }
+            System.out.println(tmp.prev);
+            tmp.prev.next=tmp.next;
+            tmp.next.prev=tmp.prev;
+        }
+        return head;
+    }
+
+    static DNode addBefore(DNode head, DNode node, int ele){
+        if(node == head){
+            DNode nnode = new DNode(ele);
+            head=nnode;
+        } else {
+            DNode nnode =new DNode(ele);
+            node.prev.next=nnode;
+            nnode.prev=node.prev;
+            nnode.next=node;
+            node.prev=nnode;
+        }
+        return head;
+    }
+
+    static DNode addAfter(DNode head, DNode node, int ele){
+        if(node == head){
+            DNode nnode = new DNode(ele);
+            head=nnode;
+        } else {
+            DNode nnode = new DNode(ele);
+            node.next.prev=nnode;
+            nnode.next=node.next;
+            node.next=nnode;
+            nnode.prev=node;
+        }
+        return head;
+    }
+
+    
 
 
     public static void main(String[] args) {
         DNode start1 = new DNode(8);
+        start1.prev=null;
         start1.next = new DNode(3);
+        start1.next.prev=start1;
         start1.next.next = new DNode(4);
+        start1.next.next.prev=start1.next;
         start1.next.next.next= new DNode(5);
+        start1.next.next.next.prev=start1.next.next;
         start1.next.next.next.next= new DNode(7);
+        start1.next.next.next.next.prev=start1.next.next.next;
         //start1.next.next.next.next.next= new DNode(9);
         //start1.next.next.next.next.next.next= new DNode(2);
 
@@ -163,10 +222,11 @@ public class Misc11 {
         //System.out.println(getFirst(start1));
         //System.out.println(getLast(start1));
         //System.out.println(getAt(start1, 2));
-        printLL(addAt(start2, 3, 22));
+        //printLL(addAt(start1, 3, 22));
+        //printLL(removeAt(start1, 1));
+        //printLL(addBefore(start1, start1.next.next, 22));
+        printLL(addAfter(start1, start1.next.next, 22));
 
 
-
-        
     }
 }
