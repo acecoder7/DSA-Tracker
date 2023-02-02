@@ -40,6 +40,17 @@ public class Task1 {
         }
         return a*power(a,n-1);
     }
+
+    static int powerlog(int a, int n){
+        if(n==0){
+            return 1;
+        }
+        int an= powerlog(a, n/2)*powerlog(a, n/2);
+        if(n%2!=0){
+            an = an*a;
+        }
+        return an;
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter number: ");
@@ -48,6 +59,8 @@ public class Task1 {
         //inc_dec(sc.nextInt());
         //System.out.println(factorial(sc.nextInt()));
         System.out.println(power(sc.nextInt(), sc.nextInt()));
+        System.out.println(powerlog(sc.nextInt(), sc.nextInt()));
+
 
     }
 }
